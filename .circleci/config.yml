@@ -16,3 +16,8 @@ jobs:
             sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
             java -version
       - run: mvn interation-test
+workflows:
+  maven_test:
+    jobs:
+      - build
+      - maven/test
