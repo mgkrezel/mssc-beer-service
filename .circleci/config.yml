@@ -16,7 +16,3 @@ jobs:
             sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
             java -version
 
-workflows:
-  maven_test:
-    jobs:
-      - maven/test # checkout, build, test, and upload test results
