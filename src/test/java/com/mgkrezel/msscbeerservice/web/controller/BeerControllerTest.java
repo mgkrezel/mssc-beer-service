@@ -1,6 +1,7 @@
 package com.mgkrezel.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mgkrezel.msscbeerservice.services.BeerService;
 import com.mgkrezel.msscbeerservice.web.model.BeerDto;
 import com.mgkrezel.msscbeerservice.web.model.BeerStyleEnum;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
@@ -18,6 +20,8 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -34,11 +38,15 @@ class BeerControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @MockBean
+    BeerService beerService;
+
     @Autowired
     ObjectMapper objectMapper;
 
     @Test
     void getBeerById() throws Exception {
+        when(beerService.getById(any())).thenReturn(getValidBeerDto());
         mockMvc.perform(get("/api/v1/beer/{beerId}", UUID.randomUUID().toString()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(
@@ -63,6 +71,8 @@ class BeerControllerTest {
 
     @Test
     void saveNewBeer() throws Exception {
+        when(beerService.saveNewBeer(any())).thenReturn(getValidBeerDto());
+
         var beerDto = getValidBeerDto();
         var beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
@@ -90,6 +100,7 @@ class BeerControllerTest {
 
     @Test
     void updateBeerById() throws Exception {
+        when(beerService.updateBeer(any(), any())).thenReturn(getValidBeerDto());
         var beerDto = getValidBeerDto();
         var beerDtoJson = objectMapper.writeValueAsString(beerDto);
         mockMvc.perform(put("/api/v1/beer/" + UUID.randomUUID().toString())

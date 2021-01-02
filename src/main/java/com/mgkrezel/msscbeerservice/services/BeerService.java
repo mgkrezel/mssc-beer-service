@@ -1,8 +1,6 @@
 package com.mgkrezel.msscbeerservice.services;
 
-import com.mgkrezel.msscbeerservice.web.controller.NotFoundException;
 import com.mgkrezel.msscbeerservice.web.model.BeerDto;
-import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
 

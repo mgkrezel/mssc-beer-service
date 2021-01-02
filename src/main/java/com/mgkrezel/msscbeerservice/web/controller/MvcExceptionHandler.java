@@ -19,4 +19,9 @@ public class MvcExceptionHandler {
         fieldErrors.forEach(fieldError -> result.add(fieldError.getField() + " : " + fieldError.getDefaultMessage()));
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> notFoundErrorHandler(NotFoundException exception) {
+        return new ResponseEntity<>("Not found beer with id: " + exception.getBeerId(), HttpStatus.BAD_REQUEST);
+    }
 }
